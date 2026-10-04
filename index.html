@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>Ben is Turning 6! 🕷️ Go Webs Go!</title>
   
-  <!-- Fonts: Bangers (Comic), Fredoka & Inter -->
+  <!-- Comic and Modern Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -25,10 +25,10 @@
           colors: {
             spidey: {
               red: '#E22128',
-              darkred: '#9E0E14',
+              darkred: '#a71117',
               blue: '#0066B3',
               darkblue: '#083B66',
-              cyan: '#00c4cc',
+              cyan: '#00C4CC',
               yellow: '#FFD200',
               ghostpink: '#E91E63'
             }
@@ -41,8 +41,8 @@
           boxShadow: {
             'comic': '4px 4px 0px #083B66',
             'comic-lg': '6px 6px 0px #083B66',
-            'comic-red': '4px 4px 0px #9E0E14',
-            'comic-card': '0 20px 50px rgba(0,0,0,0.3), 0 0 0 4px #083B66',
+            'comic-red': '4px 4px 0px #a71117',
+            'comic-card': '0 20px 40px rgba(0,0,0,0.35), 0 0 0 4px #083B66'
           }
         }
       }
@@ -50,169 +50,181 @@
   </script>
 
   <style>
+    /* Prevent rubber-banding issues and horizontal scroll on mobile */
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
     /* Halftone comic dot background */
     .comic-bg {
       background-color: #eaf4fd;
       background-image: radial-gradient(#90caf9 1.5px, transparent 1.5px), radial-gradient(#90caf9 1.5px, #eaf4fd 1.5px);
-      background-size: 26px 26px;
-      background-position: 0 0, 13px 13px;
+      background-size: 24px 24px;
+      background-position: 0 0, 12px 12px;
     }
 
-    /* Spider-web styling */
-    .spidey-web-overlay {
+    .spidey-web-pattern {
       background-image: 
-        radial-gradient(circle at 0% 0%, rgba(0, 102, 179, 0.1) 0, rgba(0, 102, 179, 0.1) 60px, transparent 61px),
-        radial-gradient(circle at 100% 100%, rgba(226, 33, 40, 0.1) 0, rgba(226, 33, 40, 0.1) 80px, transparent 81px);
+        radial-gradient(circle at 100% 0%, rgba(0, 102, 179, 0.08) 0, rgba(0, 102, 179, 0.08) 70px, transparent 71px),
+        radial-gradient(circle at 0% 100%, rgba(226, 33, 40, 0.08) 0, rgba(226, 33, 40, 0.08) 80px, transparent 81px);
     }
 
-    @keyframes floaty {
+    @keyframes floatGentle {
       0%, 100% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-6px) rotate(1.5deg); }
+      50% { transform: translateY(-5px) rotate(1deg); }
     }
 
     @keyframes pulseScale {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
+      50% { transform: scale(1.04); }
     }
 
-    @keyframes spiderBounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+    .animate-float-badge {
+      animation: floatGentle 2.6s ease-in-out infinite;
     }
 
-    .animate-floaty {
-      animation: floaty 3s ease-in-out infinite;
+    .animate-pulse-touch {
+      animation: pulseScale 1.7s ease-in-out infinite;
     }
 
-    .animate-pulse-btn {
-      animation: pulseScale 1.8s ease-in-out infinite;
+    /* 3D Envelope Styles */
+    .perspective-stage {
+      perspective: 1000px;
+      transform-style: preserve-3d;
     }
 
-    .animate-spidey-bounce {
-      animation: spiderBounce 2s ease-in-out infinite;
-    }
-
-    /* 3D Envelope Physics */
-    .perspective-container {
-      perspective: 1200px;
-    }
-
-    .envelope-top-flap {
+    .flap-transition {
       transform-origin: top center;
       transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
       backface-visibility: visible;
     }
 
-    .envelope-top-flap.open {
+    .flap-open {
       transform: rotateX(180deg);
       z-index: 5 !important;
     }
 
-    /* Card emergence and spotlight expansion */
-    .revealed-card-anim {
-      transition: all 0.9s cubic-bezier(0.2, 0.8, 0.2, 1.05);
+    /* Letter Card extraction transition */
+    .letter-card {
+      transition: all 0.75s cubic-bezier(0.18, 0.89, 0.32, 1.15);
     }
 
-    .revealed-card-anim.show-large {
-      transform: translateY(-50px) scale(1.15) !important;
+    .letter-card.card-revealed {
+      transform: translateY(-40px) scale(1) !important;
+      opacity: 1 !important;
       z-index: 60 !important;
+      pointer-events: auto !important;
     }
 
-    @media (max-width: 640px) {
-      .revealed-card-anim.show-large {
-        transform: translateY(-20px) scale(1.04) !important;
+    @media (max-height: 720px) {
+      .letter-card.card-revealed {
+        transform: translateY(-20px) scale(0.96) !important;
       }
     }
   </style>
 </head>
 
-<body class="comic-bg text-slate-800 font-sans min-h-screen flex flex-col items-center justify-start p-3 sm:p-6 relative select-none">
+<body class="comic-bg text-slate-800 font-sans min-h-screen flex flex-col items-center justify-start p-2.5 sm:p-5 relative">
 
-  <div id="envelope-overlay" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md transition-opacity duration-700 overflow-y-auto">
+  <!-- ========================================================
+       INTRO OVERLAY (Spidey Envelope Opening Experience)
+  ======================================================== -->
+  <div id="envelope-overlay" 
+       class="fixed inset-0 z-50 flex flex-col items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md transition-opacity duration-500 overflow-y-auto min-h-[100dvh]">
     
     <!-- Top Catchphrase Ribbon -->
-    <div id="overlay-ribbon" class="mb-4 text-center z-20 transition-all duration-500">
-      <div class="inline-flex items-center gap-2 bg-spidey-yellow border-4 border-slate-900 px-5 py-2 rounded-full shadow-comic transform -rotate-2 animate-spidey-bounce">
-        <span class="text-xl sm:text-2xl">🕷️</span>
-        <span class="font-comic text-2xl sm:text-4xl text-spidey-darkred tracking-wider">IT'S SPIDEY TIME!</span>
-        <span class="text-xl sm:text-2xl">🕸️</span>
+    <div id="overlay-ribbon" class="mb-2 sm:mb-4 text-center z-10 w-full max-w-sm transition-all duration-400">
+      <div class="inline-flex items-center gap-2 bg-spidey-yellow border-3 sm:border-4 border-slate-900 px-4 py-1.5 sm:py-2 rounded-full shadow-comic transform -rotate-1 animate-float-badge">
+        <span class="text-lg sm:text-2xl">🕷️</span>
+        <span class="font-comic text-xl sm:text-3xl text-spidey-darkred tracking-wider">IT'S SPIDEY TIME!</span>
+        <span class="text-lg sm:text-2xl">🕸️</span>
       </div>
-      <p class="font-bubble font-bold text-white text-sm sm:text-base mt-2 drop-shadow tracking-wide">
-        You've received a special birthday party invitation!
+      <p class="font-bubble font-bold text-white text-xs sm:text-sm mt-1.5 drop-shadow">
+        You've received a top secret party invitation!
       </p>
     </div>
 
-    <!-- 3D Envelope & Emergent Card Container -->
-    <div class="perspective-container w-full max-w-[370px] sm:max-w-[440px] relative flex flex-col items-center justify-center min-h-[360px] sm:min-h-[420px]">
+    <!-- Envelope & Emerging Card Stage -->
+    <div class="perspective-stage w-full max-w-[340px] sm:max-w-[420px] relative flex flex-col items-center justify-center min-h-[300px] sm:min-h-[360px] my-auto">
       
-      <!-- The Real-time Interactive Card that slides out and stays inspected -->
-      <div id="card-hero" class="revealed-card-anim absolute z-10 w-[92%] sm:w-[94%] bg-white rounded-3xl border-4 border-spidey-blue shadow-comic-card p-5 sm:p-6 text-center transform scale-95 opacity-0 pointer-events-none transition-all duration-700">
+      <!-- INVITATION CARD (Starts tucked behind, slides forward and expands) -->
+      <div id="card-hero" 
+           class="letter-card absolute w-[94%] bg-white rounded-3xl border-4 border-spidey-blue shadow-comic-card p-4 sm:p-6 text-center transform scale-90 translate-y-6 opacity-0 pointer-events-none z-10">
+        
         <!-- Spidey Slogan Badge -->
-        <div class="inline-block bg-spidey-blue text-white px-4 py-1 rounded-full border-2 border-slate-900 shadow-sm mb-2 transform -rotate-1">
-          <span class="font-comic text-base sm:text-lg tracking-wider">GO WEBS GO!</span>
+        <div class="inline-block bg-spidey-blue text-white px-3.5 py-0.5 rounded-full border-2 border-slate-900 shadow-sm mb-1.5 transform -rotate-1">
+          <span class="font-comic text-sm sm:text-base tracking-wider">GO WEBS GO!</span>
         </div>
 
-        <h3 class="font-comic text-spidey-red text-4xl sm:text-5xl leading-none uppercase drop-shadow-sm">
+        <h3 class="font-comic text-spidey-red text-3xl sm:text-5xl leading-none uppercase drop-shadow-sm">
           BEN IS TURNING 6!
         </h3>
         
-        <p class="font-bubble font-bold text-slate-700 text-xs sm:text-sm mt-1.5">
-          Swing on over for an epic celebration! 🕸️🎉
+        <p class="font-bubble font-bold text-slate-700 text-xs sm:text-sm mt-1">
+          Swing on over for an epic party! 🕸️🎉
         </p>
 
-        <!-- Card Key Info Recap -->
-        <div class="my-3 py-2.5 px-3 bg-red-50 rounded-2xl border-2 border-spidey-red/30 text-left space-y-1">
-          <div class="flex items-center gap-2 text-xs text-slate-800 font-bold">
-            <i class="fa-regular fa-calendar text-spidey-red"></i>
-            <span>Sunday, October 25, 2026 @ 12:45 PM</span>
+        <!-- Compact Key Party Details -->
+        <div class="my-3 py-2 px-3 bg-red-50 rounded-2xl border-2 border-spidey-red/25 text-left space-y-1.5">
+          <div class="flex items-center gap-2 text-xs sm:text-sm text-slate-900 font-bold">
+            <i class="fa-regular fa-calendar text-spidey-red text-sm"></i>
+            <span>Sunday, Oct 25, 2026 @ 12:45 PM</span>
           </div>
-          <div class="flex items-center gap-2 text-xs text-slate-700">
-            <i class="fa-solid fa-location-dot text-spidey-blue"></i>
-            <span>Hyper Kidz Rockville (7301 Calhoun Pl #400)</span>
+          <div class="flex items-start gap-2 text-xs text-slate-700">
+            <i class="fa-solid fa-location-dot text-spidey-blue text-sm mt-0.5"></i>
+            <span><strong>Hyper Kidz Rockville</strong><br>7301 Calhoun Pl #400, Rockville, MD</span>
           </div>
         </div>
 
-        <div class="space-y-2 pt-1 pointer-events-auto">
-          <button onclick="dismissOverlayAndScrollToRsvp()" 
-                  class="w-full py-3 bg-spidey-red hover:bg-spidey-darkred text-white font-comic text-2xl tracking-wider rounded-2xl border-3 border-slate-900 shadow-comic-lg transform active:translate-y-0.5 transition">
-            SEE VENUE & RSVP 🕸️
+        <!-- Buttons inside the extracted letter -->
+        <div class="space-y-2 pt-1">
+          <button type="button" 
+                  id="card-rsvp-action-btn"
+                  class="w-full py-3 bg-spidey-red hover:bg-spidey-darkred text-white font-comic text-xl sm:text-2xl tracking-wider rounded-2xl border-3 border-slate-900 shadow-comic-lg active:scale-95 transition-transform flex items-center justify-center gap-2">
+            <span>SEE DETAILS & RSVP</span>
+            <i class="fa-solid fa-arrow-down text-spidey-yellow text-base"></i>
           </button>
           
-          <button onclick="dismissOverlay()" 
-                  class="text-xs font-bubble font-bold text-slate-500 hover:text-spidey-darkblue underline">
-            View full invitation page
+          <button type="button" 
+                  id="card-skip-btn"
+                  class="w-full py-1 text-xs font-bubble font-bold text-slate-500 hover:text-spidey-blue underline">
+            Go directly to invitation page
           </button>
         </div>
       </div>
 
-      <!-- The Physical Envelope Body -->
-      <div id="envelope-body" class="relative w-full h-[240px] sm:h-[270px] bg-spidey-darkred rounded-2xl border-4 border-slate-900 shadow-2xl overflow-visible cursor-pointer transition-all duration-700" onclick="openSpideyEnvelope()">
+      <!-- THE ENVELOPE BODY -->
+      <div id="envelope-body" 
+           class="relative w-full h-[200px] sm:h-[250px] bg-spidey-darkred rounded-2xl border-4 border-slate-900 shadow-2xl overflow-visible cursor-pointer transition-all duration-500 z-20 flex items-center justify-center">
         
         <!-- Interior Liner -->
         <div class="absolute inset-0 bg-spidey-darkblue rounded-xl flex items-center justify-center overflow-hidden border-2 border-spidey-cyan/40">
-          <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#00c4cc_2px,transparent_2px)] [background-size:16px_16px]"></div>
+          <div class="absolute inset-0 opacity-25 bg-[radial-gradient(#00c4cc_2px,transparent_2px)] [background-size:14px_14px]"></div>
           <i class="fa-solid fa-spider text-spidey-cyan text-6xl opacity-30"></i>
         </div>
 
-        <!-- Envelope Fold Triangles -->
-        <div class="absolute inset-0 pointer-events-none z-20 overflow-hidden rounded-xl">
+        <!-- Envelope Fold Wings (Left, Right, Bottom) -->
+        <div class="absolute inset-0 pointer-events-none z-30 overflow-hidden rounded-xl">
           <!-- Left Wing -->
-          <div class="absolute bottom-0 left-0 w-0 h-0 border-l-[180px] sm:border-l-[215px] border-l-spidey-red border-t-[120px] sm:border-t-[135px] border-t-transparent border-b-[120px] sm:border-b-[135px] border-b-spidey-red drop-shadow"></div>
+          <div class="absolute bottom-0 left-0 w-0 h-0 border-l-[160px] sm:border-l-[200px] border-l-spidey-red border-t-[100px] sm:border-t-[125px] border-t-transparent border-b-[100px] sm:border-b-[125px] border-b-spidey-red drop-shadow"></div>
           <!-- Right Wing -->
-          <div class="absolute bottom-0 right-0 w-0 h-0 border-r-[180px] sm:border-r-[215px] border-r-spidey-red border-t-[120px] sm:border-t-[135px] border-t-transparent border-b-[120px] sm:border-b-[135px] border-b-spidey-red drop-shadow"></div>
+          <div class="absolute bottom-0 right-0 w-0 h-0 border-r-[160px] sm:border-r-[200px] border-r-spidey-red border-t-[100px] sm:border-t-[125px] border-t-transparent border-b-[100px] sm:border-b-[125px] border-b-spidey-red drop-shadow"></div>
           <!-- Bottom Wing -->
-          <div class="absolute bottom-0 inset-x-0 w-0 h-0 border-b-[130px] sm:border-b-[150px] border-b-[#c9181f] border-x-[180px] sm:border-x-[215px] border-x-transparent mx-auto"></div>
+          <div class="absolute bottom-0 inset-x-0 w-0 h-0 border-b-[110px] sm:border-b-[135px] border-b-[#be1218] border-x-[160px] sm:border-x-[200px] border-x-transparent mx-auto"></div>
         </div>
 
-        <!-- Top Flap (Hinged to open 180 deg) -->
-        <div id="envelope-flap" class="envelope-top-flap absolute top-0 inset-x-0 h-[130px] sm:h-[145px] z-30 pointer-events-none">
-          <div class="w-0 h-0 border-t-[130px] sm:border-t-[145px] border-t-spidey-red border-x-[180px] sm:border-x-[215px] border-x-transparent mx-auto drop-shadow-md"></div>
+        <!-- Top Triangular Flap -->
+        <div id="envelope-flap" class="flap-transition absolute top-0 inset-x-0 h-[105px] sm:h-[130px] z-40 pointer-events-none">
+          <div class="w-0 h-0 border-t-[105px] sm:border-t-[130px] border-t-spidey-red border-x-[160px] sm:border-x-[200px] border-x-transparent mx-auto drop-shadow-md"></div>
         </div>
 
-        <!-- Pulsing Center Spider Web Seal -->
-        <div id="envelope-seal" class="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 flex items-center justify-center transition-all duration-300">
-          <div class="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-spidey-yellow border-4 border-slate-900 shadow-comic flex items-center justify-center animate-pulse-btn cursor-pointer">
-            <i class="fa-solid fa-spider text-slate-900 text-2xl"></i>
+        <!-- Center Golden Spider Seal -->
+        <div id="envelope-seal" class="absolute top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 flex items-center justify-center transition-all duration-300">
+          <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-spidey-yellow border-3 sm:border-4 border-slate-900 shadow-comic flex items-center justify-center animate-pulse-touch">
+            <i class="fa-solid fa-spider text-slate-900 text-xl sm:text-2xl"></i>
           </div>
         </div>
 
@@ -220,91 +232,97 @@
 
     </div>
 
-    <!-- Click To Open Button -->
-    <div id="overlay-action-btn" class="mt-6 z-20 text-center transition-all duration-500">
-      <button onclick="openSpideyEnvelope()" 
-              class="group relative inline-flex items-center gap-3 bg-spidey-red hover:bg-spidey-darkred text-white font-comic text-2xl sm:text-3xl px-8 py-3.5 rounded-2xl border-4 border-slate-900 shadow-comic-lg transform active:translate-y-1 transition duration-150 animate-pulse-btn">
+    <!-- Main Tap to Open Trigger Button -->
+    <div id="overlay-action-container" class="mt-4 sm:mt-6 z-20 text-center w-full max-w-xs transition-opacity duration-300">
+      <button type="button" 
+              id="open-envelope-btn" 
+              class="w-full min-h-[50px] py-3.5 px-6 bg-spidey-red hover:bg-spidey-darkred active:scale-95 text-white font-comic text-2xl sm:text-3xl rounded-2xl border-3 sm:border-4 border-slate-900 shadow-comic-lg transition-transform flex items-center justify-center gap-3">
         <span>CLICK HERE TO OPEN</span>
-        <i class="fa-solid fa-bolt text-spidey-yellow group-hover:rotate-12 transition-transform"></i>
+        <i class="fa-solid fa-bolt text-spidey-yellow text-xl"></i>
       </button>
-      <p class="text-white/80 font-bubble text-xs mt-2 font-medium">
-        Turn on sound for web-blaster sound effects! 🔊
+      <p class="text-white/80 font-bubble text-[11px] sm:text-xs mt-2 font-medium">
+        Turn on sound for web-blaster audio effects! 🔊
       </p>
     </div>
 
   </div>
 
-  <main class="w-full max-w-xl bg-white border-4 border-spidey-darkblue rounded-3xl shadow-comic-lg overflow-hidden relative pb-8 mb-8 mt-2">
+  <!-- ========================================================
+       MAIN INVITATION CARD CONTENT
+  ======================================================== -->
+  <main class="w-full max-w-lg bg-white border-3 sm:border-4 border-spidey-darkblue rounded-3xl shadow-comic-lg overflow-hidden relative pb-6 mb-8 mt-1">
 
-    <!-- Replay Intro Top Bar -->
-    <div class="bg-spidey-darkblue text-white py-2 px-4 flex items-center justify-between text-xs font-bubble">
-      <span class="flex items-center gap-1.5 font-bold text-spidey-cyan">
-        <i class="fa-solid fa-spider"></i> Ben's Super Hero HQ
+    <!-- Replay Intro Bar -->
+    <div class="bg-spidey-darkblue text-white py-2 px-3 sm:px-4 flex items-center justify-between text-xs font-bubble">
+      <span class="flex items-center gap-1.5 font-bold text-spidey-cyan text-[11px] sm:text-xs">
+        <i class="fa-solid fa-spider"></i> Ben's Birthday HQ
       </span>
-      <button onclick="replayIntro()" class="hover:text-spidey-yellow underline flex items-center gap-1.5 font-semibold transition">
-        <i class="fa-solid fa-rotate-left"></i> Replay Envelope Intro
+      <button type="button" 
+              id="replay-intro-btn"
+              class="hover:text-spidey-yellow underline flex items-center gap-1 font-semibold transition py-1 px-2">
+        <i class="fa-solid fa-rotate-left"></i> Replay Intro
       </button>
     </div>
 
-    <!-- Hero Card Header -->
-    <div class="relative bg-gradient-to-b from-sky-100 via-white to-white pt-6 pb-4 px-4 text-center border-b-2 border-slate-100 spidey-web-overlay">
+    <!-- Header Section with Comic Accents -->
+    <div class="relative bg-gradient-to-b from-sky-100 via-white to-white pt-5 pb-3 px-3 sm:px-5 text-center border-b-2 border-slate-100 spidey-web-pattern">
       
-      <!-- Character Badges -->
-      <div class="flex justify-center items-center gap-3 sm:gap-6 mb-3">
+      <!-- Character Emblems & Age 6 Badge -->
+      <div class="flex justify-center items-center gap-3 sm:gap-4 mb-2">
         <!-- Spidey Icon -->
-        <div class="w-12 h-12 rounded-full bg-spidey-red border-3 border-slate-900 shadow-comic flex items-center justify-center text-white text-xl animate-floaty">
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-spidey-red border-3 border-slate-900 shadow-comic flex items-center justify-center text-white text-lg">
           <i class="fa-solid fa-spider"></i>
         </div>
-        <!-- 6 Birthday Badge -->
-        <div class="w-16 h-16 rounded-2xl bg-spidey-blue border-4 border-slate-900 shadow-comic-lg flex items-center justify-center text-white text-4xl font-comic">
+        <!-- Big Number 6 -->
+        <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-spidey-blue border-3 sm:border-4 border-slate-900 shadow-comic-lg flex items-center justify-center text-white text-3xl sm:text-4xl font-comic">
           6
         </div>
-        <!-- Ghost Spider / Spin Icon -->
-        <div class="w-12 h-12 rounded-full bg-spidey-cyan border-3 border-slate-900 shadow-comic flex items-center justify-center text-slate-900 text-xl animate-floaty" style="animation-delay: -1.5s;">
+        <!-- Ghost Spider Icon -->
+        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-spidey-cyan border-3 border-slate-900 shadow-comic flex items-center justify-center text-slate-900 text-lg">
           <i class="fa-solid fa-mask"></i>
         </div>
       </div>
 
       <!-- Action Slogan Banner -->
-      <div class="inline-block transform -rotate-1 bg-spidey-blue text-white px-6 py-1.5 rounded-full border-3 border-slate-900 shadow-comic mb-2">
-        <span class="font-comic tracking-wider text-xl sm:text-2xl drop-shadow">GO WEBS GO!</span>
+      <div class="inline-block transform -rotate-1 bg-spidey-blue text-white px-5 py-1 rounded-full border-2 sm:border-3 border-slate-900 shadow-comic mb-1">
+        <span class="font-comic tracking-wider text-lg sm:text-xl drop-shadow">GO WEBS GO!</span>
       </div>
 
-      <!-- Hero Title -->
-      <h1 class="text-5xl sm:text-6xl font-comic text-spidey-red tracking-wide drop-shadow uppercase leading-none mt-1">
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl font-comic text-spidey-red tracking-wide uppercase leading-none mt-1">
         BEN IS TURNING 6!
       </h1>
       
-      <p class="font-bubble text-slate-700 font-bold text-base sm:text-lg mt-2">
+      <p class="font-bubble text-slate-700 font-bold text-xs sm:text-base mt-1.5">
         Swing on over for an epic party! 🕸️🎉
       </p>
     </div>
 
-    <div class="px-5 sm:px-8 py-5 space-y-4">
+    <div class="px-4 sm:px-6 py-4 space-y-3.5">
 
-      <!-- When & Where Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+      <!-- When & Where Grid (Mobile Stacked, Side-by-Side on Tablet+) -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
         
         <!-- Date Box -->
-        <div class="bg-red-50 border-3 border-spidey-red/60 rounded-2xl p-4 flex items-start gap-3.5 shadow-sm">
-          <div class="w-10 h-10 rounded-xl bg-spidey-red text-white flex items-center justify-center shrink-0 text-lg shadow">
+        <div class="bg-red-50 border-2 sm:border-3 border-spidey-red/50 rounded-2xl p-3.5 flex items-start gap-3 shadow-sm">
+          <div class="w-9 h-9 rounded-xl bg-spidey-red text-white flex items-center justify-center shrink-0 text-base shadow">
             <i class="fa-regular fa-calendar-check"></i>
           </div>
           <div>
-            <span class="text-xs uppercase font-bubble font-bold text-spidey-red tracking-wider">Date & Time</span>
-            <h2 class="font-bold text-slate-900 text-sm sm:text-base leading-snug">Sunday, Oct 25, 2026</h2>
-            <p class="text-spidey-darkblue font-semibold text-xs sm:text-sm">12:45 PM – 2:45 PM EDT</p>
+            <span class="text-[11px] uppercase font-bubble font-bold text-spidey-red tracking-wider block">Date & Time</span>
+            <h2 class="font-bold text-slate-900 text-sm leading-snug">Sunday, Oct 25, 2026</h2>
+            <p class="text-spidey-darkblue font-semibold text-xs mt-0.5">12:45 PM – 2:45 PM</p>
           </div>
         </div>
 
         <!-- Venue Box (Calhoun Pl verified address) -->
-        <div class="bg-blue-50 border-3 border-spidey-blue/60 rounded-2xl p-4 flex items-start gap-3.5 shadow-sm">
-          <div class="w-10 h-10 rounded-xl bg-spidey-blue text-white flex items-center justify-center shrink-0 text-lg shadow">
+        <div class="bg-blue-50 border-2 sm:border-3 border-spidey-blue/50 rounded-2xl p-3.5 flex items-start gap-3 shadow-sm">
+          <div class="w-9 h-9 rounded-xl bg-spidey-blue text-white flex items-center justify-center shrink-0 text-base shadow">
             <i class="fa-solid fa-location-dot"></i>
           </div>
           <div>
-            <span class="text-xs uppercase font-bubble font-bold text-spidey-blue tracking-wider">Location</span>
-            <h2 class="font-bold text-slate-900 text-sm sm:text-base leading-snug">Hyper Kidz Rockville</h2>
+            <span class="text-[11px] uppercase font-bubble font-bold text-spidey-blue tracking-wider block">Location</span>
+            <h2 class="font-bold text-slate-900 text-sm leading-snug">Hyper Kidz Rockville</h2>
             <p class="text-slate-700 text-xs font-medium mt-0.5 leading-tight">
               7301 Calhoun Pl #400<br>Rockville, MD 20855
             </p>
@@ -312,60 +330,67 @@
         </div>
       </div>
 
-      <!-- Quick Action Buttons -->
-      <div class="flex flex-wrap items-center justify-center gap-2.5 pt-1">
+      <!-- Quick Action Buttons: Calendar, Directions, Waiver -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
         <!-- Add to Calendar Link -->
         <a id="gcal-link" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-2 bg-spidey-blue hover:bg-spidey-darkblue text-white text-xs font-bold px-4 py-2.5 rounded-xl border-2 border-slate-900 shadow-comic transition transform active:translate-y-0.5">
-          <i class="fa-solid fa-calendar-plus text-spidey-yellow"></i> Add to Calendar
+           class="min-h-[44px] flex items-center justify-center gap-1.5 bg-spidey-blue hover:bg-spidey-darkblue text-white text-xs font-bold px-3 py-2.5 rounded-xl border-2 border-slate-900 shadow-comic active:scale-95 transition-transform text-center">
+          <i class="fa-solid fa-calendar-plus text-spidey-yellow"></i> <span>Add to Cal</span>
         </a>
 
         <!-- Open in Google Maps Link -->
-        <a href="https://www.google.com/maps/search/?api=1&query=Hyper+Kidz+Rockville+7301+Calhoun+Pl+%23400+Rockville+MD+20855" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold px-4 py-2.5 rounded-xl border-2 border-slate-900 shadow-comic transition transform active:translate-y-0.5">
-          <i class="fa-solid fa-diamond-turn-right text-emerald-600"></i> Open in Maps
+        <a href="https://www.google.com/maps/search/?api=1&query=Hyper+Kidz+Rockville+7301+Calhoun+Pl+%23400+Rockville+MD+20855" 
+           target="_blank" rel="noopener noreferrer"
+           class="min-h-[44px] flex items-center justify-center gap-1.5 bg-white hover:bg-slate-50 text-slate-800 text-xs font-bold px-3 py-2.5 rounded-xl border-2 border-slate-900 shadow-comic active:scale-95 transition-transform text-center">
+          <i class="fa-solid fa-diamond-turn-right text-emerald-600"></i> <span>Open Maps</span>
         </a>
 
         <!-- Direct Hyper Kidz Rockville Waiver Link -->
-        <a href="https://waiver.roller.app/hyperkidzrockville/waiver" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-2 bg-spidey-cyan/20 hover:bg-spidey-cyan/30 text-spidey-darkblue text-xs font-bold px-4 py-2.5 rounded-xl border-2 border-spidey-cyan transition transform active:translate-y-0.5">
-          <i class="fa-solid fa-file-signature text-spidey-blue"></i> Sign Online Waiver
+        <a href="https://waiver.roller.app/hyperkidzrockville/waiver" 
+           target="_blank" rel="noopener noreferrer"
+           class="min-h-[44px] flex items-center justify-center gap-1.5 bg-spidey-cyan/20 hover:bg-spidey-cyan/30 text-spidey-darkblue text-xs font-bold px-3 py-2.5 rounded-xl border-2 border-spidey-cyan active:scale-95 transition-transform text-center">
+          <i class="fa-solid fa-file-signature text-spidey-blue"></i> <span>Sign Waiver</span>
         </a>
       </div>
 
-      <!-- Venue Guidelines Notice -->
-      <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-4 text-xs text-amber-950 space-y-1.5 shadow-sm">
-        <div class="flex items-center gap-2 font-bubble font-bold text-amber-900 text-sm">
-          <i class="fa-solid fa-circle-exclamation text-amber-600 text-base"></i>
+      <!-- Important Venue Notice -->
+      <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-3.5 text-xs text-amber-950 space-y-1.5 shadow-sm">
+        <div class="flex items-center gap-2 font-bubble font-bold text-amber-900 text-xs sm:text-sm">
+          <i class="fa-solid fa-circle-exclamation text-amber-600"></i>
           <span>Important Hyper Kidz Reminders:</span>
         </div>
-        <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+        <ul class="list-disc list-inside space-y-1 pl-0.5 text-slate-700">
           <li><strong>Socks Required:</strong> Hyper Kidz requires socks for <em>all</em> children and adults entering the play arenas.</li>
-          <li><strong>Safety Waiver:</strong> Every guest must have a signed waiver before playing. Please complete the <a href="https://waiver.roller.app/hyperkidzrockville/waiver" target="_blank" rel="noopener noreferrer" class="text-spidey-blue font-bold underline">online waiver here</a> ahead of arrival to skip line delays!</li>
+          <li><strong>Online Waiver:</strong> Every guest needs a signed waiver. Complete the <a href="https://waiver.roller.app/hyperkidzrockville/waiver" target="_blank" rel="noopener noreferrer" class="text-spidey-blue font-bold underline">Roller online waiver</a> beforehand to skip line delays!</li>
         </ul>
       </div>
 
-      <section id="rsvp-section" class="mt-8 pt-6 border-t-3 border-dashed border-slate-200">
+      <!-- ========================================================
+           RSVP SECTION (Custom Form + Direct Embed Tab)
+      ======================================================== -->
+      <section id="rsvp-section" class="mt-6 pt-5 border-t-2 border-dashed border-slate-200">
         
-        <div class="text-center mb-5">
-          <div class="inline-block bg-spidey-red text-white text-xs font-bubble font-bold uppercase tracking-wider px-3.5 py-1 rounded-full mb-1">
+        <div class="text-center mb-4">
+          <div class="inline-block bg-spidey-red text-white text-[11px] font-bubble font-bold uppercase tracking-wider px-3 py-0.5 rounded-full mb-1">
             RSVP by Sunday, October 18
           </div>
           <h2 class="text-3xl sm:text-4xl font-comic text-spidey-darkblue tracking-wide">RSVP HERE</h2>
-          <p class="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto">
+          <p class="text-xs text-slate-600 max-w-xs mx-auto">
             Let us know if your superhero can join us so we can finalize wristbands & cake!
           </p>
         </div>
 
-        <!-- View Mode Switcher -->
-        <div class="flex justify-center mb-4">
+        <!-- View Mode Tab Buttons -->
+        <div class="flex justify-center mb-3.5">
           <div class="bg-slate-100 p-1 rounded-2xl flex border-2 border-slate-300 text-xs font-semibold">
-            <button id="tab-custom-btn" onclick="switchRsvpView('custom')" 
-                    class="px-4 py-1.5 rounded-xl bg-white text-spidey-darkblue shadow-sm font-bold transition">
+            <button type="button" 
+                    id="tab-custom-btn" 
+                    class="px-3.5 py-1.5 rounded-xl bg-white text-spidey-darkblue shadow-sm font-bold transition">
               Quick RSVP Form
             </button>
-            <button id="tab-embed-btn" onclick="switchRsvpView('embed')" 
-                    class="px-4 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition">
+            <button type="button" 
+                    id="tab-embed-btn" 
+                    class="px-3.5 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition">
               Google Form Embed
             </button>
           </div>
@@ -374,40 +399,39 @@
         <!-- Hidden iframe for silent background submission to Google Forms -->
         <iframe name="google_submission_target" id="google_submission_target" class="hidden"></iframe>
 
-        <!-- 1. Custom Interactive Form (Direct Google Form Submission) -->
+        <!-- 1. Custom Interactive Form -->
         <div id="rsvp-custom-container" class="block">
           <form id="party-rsvp-form" 
                 action="https://docs.google.com/forms/d/e/1FAIpQLScdt2l0gzU2jFsdX30rygjCL-wFaLB2mnoYQtSajX85wD4G5A/formResponse" 
                 method="POST" 
                 target="google_submission_target"
-                onsubmit="handleCustomFormSubmit(event)" 
-                class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 sm:p-5 space-y-3.5">
+                class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-3.5 sm:p-5 space-y-3">
             
             <!-- Child's Name -->
             <div>
               <label class="block text-xs font-bubble font-bold text-slate-700 mb-1" for="kidName">
                 Child's Full Name <span class="text-spidey-red">*</span>
               </label>
-              <input type="text" id="kidName" name="entry_kid_name" required placeholder="e.g., Peter Parker"
-                     class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
+              <input type="text" id="kidName" name="entry.childName" required placeholder="e.g., Miles Morales"
+                     class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
             </div>
 
             <!-- Parent Name & Optional Phone Number -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
                 <label class="block text-xs font-bubble font-bold text-slate-700 mb-1" for="parentName">
                   Parent / Guardian Name <span class="text-spidey-red">*</span>
                 </label>
-                <input type="text" id="parentName" name="entry_parent_name" required placeholder="Your name"
-                       class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
+                <input type="text" id="parentName" name="entry.parentName" required placeholder="Your name"
+                       class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
               </div>
 
               <div>
                 <label class="block text-xs font-bubble font-bold text-slate-700 mb-1" for="parentPhone">
                   Mobile Number <span class="text-slate-400 font-normal">(Optional)</span>
                 </label>
-                <input type="tel" id="parentPhone" name="entry_phone" placeholder="(301) 555-0123"
-                       class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
+                <input type="tel" id="parentPhone" name="entry.phone" placeholder="(301) 555-0123"
+                       class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
               </div>
             </div>
 
@@ -417,24 +441,24 @@
                 Will you be attending? <span class="text-spidey-red">*</span>
               </label>
               <div class="grid grid-cols-2 gap-2 mt-1">
-                <label class="border-2 border-slate-300 has-[:checked]:border-spidey-blue has-[:checked]:bg-blue-50 rounded-xl p-3 flex items-center gap-2 cursor-pointer transition bg-white">
-                  <input type="radio" name="entry_attending" value="Yes! Can't wait! 🎉" checked class="accent-spidey-blue">
+                <label class="min-h-[48px] border-2 border-slate-300 has-[:checked]:border-spidey-blue has-[:checked]:bg-blue-50 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer transition bg-white">
+                  <input type="radio" name="entry.attending" value="Yes! Can't wait! 🎉" checked class="accent-spidey-blue w-4 h-4">
                   <span class="text-xs font-bold text-slate-800">Yes! Can't wait! 🎉</span>
                 </label>
-                <label class="border-2 border-slate-300 has-[:checked]:border-spidey-red has-[:checked]:bg-red-50 rounded-xl p-3 flex items-center gap-2 cursor-pointer transition bg-white">
-                  <input type="radio" name="entry_attending" value="Sorry, can't make it 😢" class="accent-spidey-red">
+                <label class="min-h-[48px] border-2 border-slate-300 has-[:checked]:border-spidey-red has-[:checked]:bg-red-50 rounded-xl p-2.5 flex items-center gap-2 cursor-pointer transition bg-white">
+                  <input type="radio" name="entry.attending" value="Sorry, can't make it 😢" class="accent-spidey-red w-4 h-4">
                   <span class="text-xs font-bold text-slate-800">Can't make it 😢</span>
                 </label>
               </div>
             </div>
 
             <!-- Number of Jumpers & Notes/Allergies -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               <div>
                 <label class="block text-xs font-bubble font-bold text-slate-700 mb-1" for="kidCount">
                   Total Kids Playing
                 </label>
-                <select id="kidCount" name="entry_kids_count" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
+                <select id="kidCount" name="entry.kidCount" class="w-full min-h-[44px] px-3 py-2 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
                   <option value="1">1 Child</option>
                   <option value="2">2 Children</option>
                   <option value="3">3+ Children</option>
@@ -445,33 +469,34 @@
                 <label class="block text-xs font-bubble font-bold text-slate-700 mb-1" for="allergies">
                   Dietary Restrictions / Notes
                 </label>
-                <input type="text" id="allergies" name="entry_notes" placeholder="Nut allergy, gluten-free, etc."
-                       class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
+                <input type="text" id="allergies" name="entry.notes" placeholder="Nut allergy, pizza request, etc."
+                       class="w-full min-h-[44px] px-3.5 py-2 rounded-xl border-2 border-slate-300 focus:border-spidey-blue outline-none text-sm bg-white">
               </div>
             </div>
 
-            <button type="submit" id="submit-btn"
-                    class="w-full mt-2 py-3 bg-spidey-red hover:bg-spidey-darkred text-white font-comic text-2xl tracking-wider rounded-xl border-2 border-slate-900 shadow-comic transition transform active:translate-y-0.5">
+            <button type="submit" 
+                    id="submit-btn"
+                    class="w-full mt-2 min-h-[48px] py-3 bg-spidey-red hover:bg-spidey-darkred text-white font-comic text-2xl tracking-wider rounded-xl border-2 border-slate-900 shadow-comic active:scale-95 transition-transform">
               SEND RSVP!
             </button>
           </form>
 
-          <!-- RSVP Confirmation Banner -->
-          <div id="rsvp-confirmation" class="hidden bg-emerald-50 border-3 border-emerald-500 text-emerald-950 p-6 rounded-2xl text-center space-y-2">
-            <div class="w-14 h-14 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto text-2xl shadow">
+          <!-- RSVP Success Banner -->
+          <div id="rsvp-confirmation" class="hidden bg-emerald-50 border-3 border-emerald-500 text-emerald-950 p-5 rounded-2xl text-center space-y-2">
+            <div class="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center mx-auto text-xl shadow">
               <i class="fa-solid fa-check"></i>
             </div>
-            <h3 class="font-comic text-3xl text-emerald-800">Web-tastic! RSVP Received!</h3>
+            <h3 class="font-comic text-2xl sm:text-3xl text-emerald-800">Web-tastic! RSVP Received!</h3>
             <p class="text-xs sm:text-sm text-emerald-900 font-medium" id="conf-message">
               Thank you! Your response has been recorded. We can't wait to celebrate Ben with you!
             </p>
             <div class="pt-2">
               <a href="https://waiver.roller.app/hyperkidzrockville/waiver" target="_blank" rel="noopener noreferrer" 
-                 class="inline-block text-xs font-bold bg-emerald-600 text-white px-4 py-2 rounded-xl shadow-sm hover:bg-emerald-700 transition">
+                 class="inline-block text-xs font-bold bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow hover:bg-emerald-700 transition">
                 Sign Online Waiver Now
               </a>
             </div>
-            <button onclick="resetRsvpForm()" class="text-xs font-bold text-emerald-700 underline mt-3 block mx-auto">
+            <button type="button" id="reset-rsvp-btn" class="text-xs font-bold text-emerald-700 underline mt-2 block mx-auto py-1">
               Submit another response
             </button>
           </div>
@@ -479,11 +504,11 @@
 
         <!-- 2. Embedded Google Form View -->
         <div id="rsvp-embed-container" class="hidden space-y-3">
-          <div class="w-full bg-slate-50 border-2 border-slate-300 rounded-2xl overflow-hidden min-h-[580px]">
+          <div class="w-full bg-slate-50 border-2 border-slate-300 rounded-2xl overflow-hidden min-h-[560px]">
             <iframe id="google-form-iframe" 
                     src="https://docs.google.com/forms/d/e/1FAIpQLScdt2l0gzU2jFsdX30rygjCL-wFaLB2mnoYQtSajX85wD4G5A/viewform?embedded=true" 
                     width="100%" 
-                    height="700" 
+                    height="680" 
                     frameborder="0" 
                     marginheight="0" 
                     marginwidth="0" 
@@ -492,7 +517,9 @@
             </iframe>
           </div>
           <div class="text-center">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLScdt2l0gzU2jFsdX30rygjCL-wFaLB2mnoYQtSajX85wD4G5A/viewform" target="_blank" rel="noopener noreferrer" class="text-xs text-spidey-blue font-bold underline">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScdt2l0gzU2jFsdX30rygjCL-wFaLB2mnoYQtSajX85wD4G5A/viewform" 
+               target="_blank" rel="noopener noreferrer" 
+               class="text-xs text-spidey-blue font-bold underline inline-block py-1">
               Open Form directly in new tab ↗
             </a>
           </div>
@@ -504,7 +531,7 @@
 
     <!-- Footer -->
     <div class="text-center pt-2 px-4 border-t border-slate-100">
-      <p class="text-xs text-slate-500 font-bubble">
+      <p class="text-[11px] text-slate-500 font-bubble">
         Questions? Call or text Ben's parents! • See you at Hyper Kidz! 🕷️
       </p>
     </div>
@@ -513,7 +540,7 @@
 
   <script>
     // =========================================================
-    // 1. Synthesized Spidey Sound FX (Web Audio API)
+    // 1. Web Audio API Sound Synthesizer (Touch Safe)
     // =========================================================
     class SpideyAudioBlaster {
       constructor() {
@@ -538,19 +565,19 @@
           const gain = this.ctx.createGain();
           
           osc.type = 'triangle';
-          osc.frequency.setValueAtTime(850, this.ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.35);
+          osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(110, this.ctx.currentTime + 0.3);
 
-          gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.35);
+          gain.gain.setValueAtTime(0.28, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
 
           osc.connect(gain);
           gain.connect(this.ctx.destination);
 
           osc.start();
-          osc.stop(this.ctx.currentTime + 0.35);
+          osc.stop(this.ctx.currentTime + 0.3);
         } catch (e) {
-          console.warn("Audio unavailable", e);
+          // Audio blocked or unsupported; silent fallback
         }
       }
       playFanfare() {
@@ -561,19 +588,19 @@
           notes.forEach((freq, idx) => {
             const osc = this.ctx.createOscillator();
             const gain = this.ctx.createGain();
-            const start = this.ctx.currentTime + (idx * 0.09);
+            const start = this.ctx.currentTime + (idx * 0.08);
 
             osc.type = 'sine';
             osc.frequency.setValueAtTime(freq, start);
 
-            gain.gain.setValueAtTime(0.25, start);
-            gain.gain.exponentialRampToValueAtTime(0.001, start + 0.32);
+            gain.gain.setValueAtTime(0.2, start);
+            gain.gain.exponentialRampToValueAtTime(0.001, start + 0.3);
 
             osc.connect(gain);
             gain.connect(this.ctx.destination);
 
             osc.start(start);
-            osc.stop(start + 0.32);
+            osc.stop(start + 0.3);
           });
         } catch(e) {}
       }
@@ -582,45 +609,44 @@
     const soundBlaster = new SpideyAudioBlaster();
 
     // =========================================================
-    // 2. Confetti Web Blaster
+    // 2. Confetti Burst
     // =========================================================
     function fireSpideyConfetti() {
       if (typeof confetti !== 'function') return;
-
-      const colors = ['#E22128', '#0066B3', '#00c4cc', '#FFD200', '#ffffff'];
+      const colors = ['#E22128', '#0066B3', '#00C4CC', '#FFD200', '#ffffff'];
 
       confetti({
-        particleCount: 60,
+        particleCount: 50,
         angle: 60,
-        spread: 70,
-        origin: { x: 0.1, y: 0.6 },
+        spread: 60,
+        origin: { x: 0.1, y: 0.65 },
         colors: colors
       });
 
       confetti({
-        particleCount: 60,
+        particleCount: 50,
         angle: 120,
-        spread: 70,
-        origin: { x: 0.9, y: 0.6 },
+        spread: 60,
+        origin: { x: 0.9, y: 0.65 },
         colors: colors
       });
 
       setTimeout(() => {
         confetti({
-          particleCount: 90,
-          spread: 100,
-          origin: { y: 0.45 },
+          particleCount: 75,
+          spread: 80,
+          origin: { y: 0.5 },
           colors: colors
         });
-      }, 250);
+      }, 200);
     }
 
     // =========================================================
-    // 3. Cinematic Envelope & Card Reveal Logic
+    // 3. Reliable Envelope Animation & State Control
     // =========================================================
     let isEnvelopeOpened = false;
 
-    function openSpideyEnvelope() {
+    function executeEnvelopeOpen() {
       if (isEnvelopeOpened) return;
       isEnvelopeOpened = true;
 
@@ -630,58 +656,53 @@
       const seal = document.getElementById('envelope-seal');
       const envelopeBody = document.getElementById('envelope-body');
       const cardHero = document.getElementById('card-hero');
-      const actionBtn = document.getElementById('overlay-action-btn');
-      const ribbon = document.getElementById('overlay-ribbon');
+      const actionContainer = document.getElementById('overlay-action-container');
 
-      // 1. Vanish seal & unfold top flap
+      // Hide trigger button and seal
+      if (actionContainer) {
+        actionContainer.style.opacity = '0';
+        actionContainer.style.pointerEvents = 'none';
+      }
       if (seal) {
         seal.style.opacity = '0';
         seal.style.transform = 'translate(-50%, -50%) scale(0.2)';
       }
-      if (actionBtn) {
-        actionBtn.style.opacity = '0';
-        actionBtn.style.pointerEvents = 'none';
-      }
+      
+      // Flip the top flap open
       if (flap) {
-        flap.classList.add('open');
+        flap.classList.add('flap-open');
       }
 
-      // 2. Card emerges and scales to full spotlight
+      // Slide card forward and drop envelope down
       setTimeout(() => {
         soundBlaster.playFanfare();
         fireSpideyConfetti();
 
         if (envelopeBody) {
-          envelopeBody.style.transform = 'translateY(160px) scale(0.85)';
-          envelopeBody.style.opacity = '0.3';
+          envelopeBody.style.transform = 'translateY(120px) scale(0.9)';
+          envelopeBody.style.opacity = '0.35';
         }
 
         if (cardHero) {
-          cardHero.style.opacity = '1';
-          cardHero.style.pointerEvents = 'auto';
-          cardHero.classList.add('show-large');
+          cardHero.classList.add('card-revealed');
         }
-      }, 450);
+      }, 400);
     }
 
-    function dismissOverlay() {
+    function dismissOverlay(scrollToRsvp = false) {
       const overlay = document.getElementById('envelope-overlay');
       if (overlay) {
         overlay.classList.add('opacity-0', 'pointer-events-none');
         setTimeout(() => {
           overlay.style.display = 'none';
-        }, 700);
+          if (scrollToRsvp) {
+            const rsvp = document.getElementById('rsvp-section');
+            if (rsvp) {
+              rsvp.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        }, 500);
       }
-    }
-
-    function dismissOverlayAndScrollToRsvp() {
-      dismissOverlay();
-      setTimeout(() => {
-        const rsvpSection = document.getElementById('rsvp-section');
-        if (rsvpSection) {
-          rsvpSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 350);
     }
 
     function replayIntro() {
@@ -690,10 +711,10 @@
       const seal = document.getElementById('envelope-seal');
       const envelopeBody = document.getElementById('envelope-body');
       const cardHero = document.getElementById('card-hero');
-      const actionBtn = document.getElementById('overlay-action-btn');
+      const actionContainer = document.getElementById('overlay-action-container');
 
       isEnvelopeOpened = false;
-      if (flap) flap.classList.remove('open');
+      if (flap) flap.classList.remove('flap-open');
       if (seal) {
         seal.style.opacity = '1';
         seal.style.transform = 'translate(-50%, -50%) scale(1)';
@@ -703,13 +724,11 @@
         envelopeBody.style.opacity = '1';
       }
       if (cardHero) {
-        cardHero.classList.remove('show-large');
-        cardHero.style.opacity = '0';
-        cardHero.style.pointerEvents = 'none';
+        cardHero.classList.remove('card-revealed');
       }
-      if (actionBtn) {
-        actionBtn.style.opacity = '1';
-        actionBtn.style.pointerEvents = 'auto';
+      if (actionContainer) {
+        actionContainer.style.opacity = '1';
+        actionContainer.style.pointerEvents = 'auto';
       }
 
       overlay.style.display = 'flex';
@@ -719,37 +738,72 @@
     }
 
     // =========================================================
-    // 4. Add to Google Calendar Link Generation
+    // 4. Attach Event Listeners Safely (Resolves Touch/Pointer Blocks)
     // =========================================================
-    const gCalBtn = document.getElementById('gcal-link');
-    const calEvent = {
-      title: "Ben's 6th Birthday Party (Spidey & Friends)!",
-      start: "20261025T164500Z", // Oct 25, 2026 12:45 PM EDT in UTC
-      end: "20261025T184500Z",   // Oct 25, 2026 2:45 PM EDT in UTC
-      details: "Ben is turning 6 at Hyper Kidz in Rockville! Reminder: Socks are required for all kids and adults. Please sign the waiver online beforehand: https://waiver.roller.app/hyperkidzrockville/waiver",
-      location: "Hyper Kidz Rockville, 7301 Calhoun Pl #400, Rockville, MD 20855"
-    };
-    gCalBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(calEvent.title)}&dates=${calEvent.start}/${calEvent.end}&details=${encodeURIComponent(calEvent.details)}&location=${encodeURIComponent(calEvent.location)}`;
+    document.addEventListener('DOMContentLoaded', () => {
+      // Open button and envelope body triggers
+      const openBtn = document.getElementById('open-envelope-btn');
+      const envelopeBody = document.getElementById('envelope-body');
+      if (openBtn) openBtn.addEventListener('click', executeEnvelopeOpen);
+      if (envelopeBody) envelopeBody.addEventListener('click', executeEnvelopeOpen);
+
+      // Card action buttons
+      const cardRsvpBtn = document.getElementById('card-rsvp-action-btn');
+      const cardSkipBtn = document.getElementById('card-skip-btn');
+      if (cardRsvpBtn) cardRsvpBtn.addEventListener('click', () => dismissOverlay(true));
+      if (cardSkipBtn) cardSkipBtn.addEventListener('click', () => dismissOverlay(false));
+
+      // Replay button
+      const replayBtn = document.getElementById('replay-intro-btn');
+      if (replayBtn) replayBtn.addEventListener('click', replayIntro);
+
+      // Tabs switcher
+      const tabCustom = document.getElementById('tab-custom-btn');
+      const tabEmbed = document.getElementById('tab-embed-btn');
+      if (tabCustom) tabCustom.addEventListener('click', () => switchRsvpTab('custom'));
+      if (tabEmbed) tabEmbed.addEventListener('click', () => switchRsvpTab('embed'));
+
+      // Form submission
+      const form = document.getElementById('party-rsvp-form');
+      if (form) form.addEventListener('submit', handleFormSubmit);
+
+      // Reset form
+      const resetBtn = document.getElementById('reset-rsvp-btn');
+      if (resetBtn) resetBtn.addEventListener('click', resetForm);
+
+      // Generate Calendar Link
+      const gCalBtn = document.getElementById('gcal-link');
+      if (gCalBtn) {
+        const calData = {
+          title: "Ben's 6th Birthday Party (Spidey & Friends)!",
+          start: "20261025T164500Z", // Oct 25, 2026 12:45 PM EDT in UTC
+          end: "20261025T184500Z",   // Oct 25, 2026 2:45 PM EDT in UTC
+          details: "Ben is turning 6 at Hyper Kidz in Rockville! Reminder: Socks are required for all kids and adults. Please complete the waiver beforehand: https://waiver.roller.app/hyperkidzrockville/waiver",
+          location: "Hyper Kidz Rockville, 7301 Calhoun Pl #400, Rockville, MD 20855"
+        };
+        gCalBtn.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(calData.title)}&dates=${calData.start}/${calData.end}&details=${encodeURIComponent(calData.details)}&location=${encodeURIComponent(calData.location)}`;
+      }
+    });
 
     // =========================================================
-    // 5. RSVP Submission & View Tabs
+    // 5. RSVP Tab Switching & Submission Logic
     // =========================================================
-    function switchRsvpView(mode) {
-      const customContainer = document.getElementById('rsvp-custom-container');
-      const embedContainer = document.getElementById('rsvp-embed-container');
+    function switchRsvpTab(mode) {
+      const customBox = document.getElementById('rsvp-custom-container');
+      const embedBox = document.getElementById('rsvp-embed-container');
       const customBtn = document.getElementById('tab-custom-btn');
       const embedBtn = document.getElementById('tab-embed-btn');
 
       if (mode === 'custom') {
-        customContainer.classList.remove('hidden');
-        embedContainer.classList.add('hidden');
+        customBox.classList.remove('hidden');
+        embedBox.classList.add('hidden');
         customBtn.classList.add('bg-white', 'text-spidey-darkblue', 'shadow-sm', 'font-bold');
         customBtn.classList.remove('text-slate-600');
         embedBtn.classList.remove('bg-white', 'text-spidey-darkblue', 'shadow-sm', 'font-bold');
         embedBtn.classList.add('text-slate-600');
       } else {
-        customContainer.classList.add('hidden');
-        embedContainer.classList.remove('hidden');
+        customBox.classList.add('hidden');
+        embedBox.classList.remove('hidden');
         embedBtn.classList.add('bg-white', 'text-spidey-darkblue', 'shadow-sm', 'font-bold');
         embedBtn.classList.remove('text-slate-600');
         customBtn.classList.remove('bg-white', 'text-spidey-darkblue', 'shadow-sm', 'font-bold');
@@ -757,9 +811,9 @@
       }
     }
 
-    function handleCustomFormSubmit(e) {
+    function handleFormSubmit(e) {
       const kidName = document.getElementById('kidName').value;
-      const attending = document.querySelector('input[name="entry_attending"]:checked').value;
+      const attending = document.querySelector('input[name="entry.attending"]:checked').value;
       
       const form = document.getElementById('party-rsvp-form');
       const conf = document.getElementById('rsvp-confirmation');
@@ -772,9 +826,17 @@
         confMsg.innerHTML = `We will miss you, <strong>${kidName}</strong>! Thanks for letting us know! ❤️`;
       }
 
-      // Hide form and show confirmation banner
       setTimeout(() => {
         form.classList.add('hidden');
         conf.classList.remove('hidden');
       }, 250);
     }
+
+    function resetForm() {
+      document.getElementById('party-rsvp-form').reset();
+      document.getElementById('party-rsvp-form').classList.remove('hidden');
+      document.getElementById('rsvp-confirmation').classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
